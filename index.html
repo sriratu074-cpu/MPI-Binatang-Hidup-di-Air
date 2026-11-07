@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Binatang yang Hidup di Air</title>
+<style>
+:root{--bg:#e6f6ff;--card:#fff;--ink:#12324a;--pri:#0a8fd6;--ok:#2fb36b;--no:#f0883e;--sh:#bfe3f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d2535;--card:#173a52;--ink:#eaf6ff;--pri:#3bb0f0;--sh:#0a1b28;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d2535;--card:#173a52;--ink:#eaf6ff;--pri:#3bb0f0;--sh:#0a1b28;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Comic Sans MS","Trebuchet MS",system-ui,sans-serif;font-size:20px;background-image:radial-gradient(circle at 20% 10%,rgba(255,255,255,.25),transparent 40%)}
+#app{max-width:760px;margin:0 auto;padding:14px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+h1{font-size:1.25em;margin:0}
+button{font:inherit;color:inherit;cursor:pointer;border:0;border-radius:22px;background:var(--card);box-shadow:0 4px 0 var(--sh);padding:12px 16px;min-height:56px}
+button:active{transform:translateY(3px);box-shadow:none}
+.home{background:var(--pri);color:#fff;min-height:48px;font-size:.8em}
+.menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.menu button{display:flex;align-items:center;gap:12px;text-align:left;font-size:1.05em;padding:16px;min-height:84px}
+.menu .e{font-size:2.2em}
+.menu .t small{display:block;font-size:.6em;opacity:.7}
+.tick{margin-left:auto;font-size:1.3em}
+.card{background:var(--card);border-radius:26px;padding:18px;box-shadow:0 4px 0 var(--sh);margin-bottom:14px}
+.tip{font-size:.72em;background:#fff4c2;color:#5a4700;border-radius:16px;padding:10px 14px;margin-bottom:12px}
+.big{font-size:5em;text-align:center;line-height:1.1}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:12px}
+.opt{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px;min-height:130px}
+.opt span,.chip span{font-size:3.4em;line-height:1}
+.ok{background:#bdf0d2!important;color:#0b3d22}
+.no{background:#ffd9bf!important;color:#5a2a00}
+.sel{background:#cfe9fb!important;color:#0a3550}
+.q{font-size:1.2em;text-align:center}
+.sp{min-height:44px;padding:6px 12px;margin-left:6px}
+#fb{text-align:center;margin-top:12px;min-height:30px}
+.bubbles{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:14px 0}
+.bub{width:110px;height:110px;border-radius:50%;font-size:2.6em;background:radial-gradient(circle at 30% 30%,#fff,#9fdcff);box-shadow:none;animation:fl 3s ease-in-out infinite}
+.bub:nth-child(2){animation-delay:.6s}.bub:nth-child(3){animation-delay:1.2s}.bub:nth-child(4){animation-delay:1.8s}
+@keyframes fl{50%{transform:translateY(-10px)}}
+.say{background:#fff;color:#12324a;border-radius:22px;padding:14px;text-align:center;font-size:1.1em;min-height:60px;margin-top:6px}
+.zones{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.zone{min-height:130px;border-radius:26px;padding:10px;text-align:center;font-size:.9em;border:4px dashed}
+.zone.air{background:#b8e4fa;border-color:#0a8fd6;color:#0a3550}.zone.dar{background:#e9dcb8;border-color:#a2813a;color:#4a3710}
+.zone .in{font-size:2.2em;word-break:break-all}
+.pool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.chip{min-width:84px;min-height:84px;padding:8px}
+.chip.on{outline:5px solid var(--pri)}
+.shake{animation:sh .35s}
+@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.face{font-size:3.4em;min-width:100px}
+.small{font-size:.72em}
+.stars{font-size:2.4em;text-align:center}
+ul.g{font-size:.8em;padding-left:22px;margin:8px 0}
+</style></head>
+<body><div id="app"></div>
+<script>
+const $=document.getElementById('app');
+const done={},res={};
+let cur='';
+function say(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='id-ID';u.rate=.85;speechSynthesis.speak(u)}catch(e){}}
+function sayCur(){say(cur)}
+function view(title,body,tip,nohome){
+ $.innerHTML='<div class="top"><h1>'+title+'</h1>'+(nohome?'':'<button class="home" onclick="home()">🏠 Menu</button>')+'</div>'+(tip?'<div class="tip">👩‍🏫 Untuk guru: '+tip+'</div>':'')+body;
+ window.scrollTo(0,0);
+}
+const M=[['apersepsi','🫧','Apersepsi','Ayo menebak!'],['awal','🔍','Asesmen Awal','Apa yang kamu tahu?'],['materi','📖','Materi Pokok','Kenalan dengan binatang air'],['sim','🎮','Simulasi','Air atau darat?'],['kuis','⭐','Kuis','Ayo menjawab!'],['akhir','📝','Asesmen Akhir','Apa yang sudah kamu tahu?'],['refleksi','😊','Refleksi','Bagaimana perasaanmu?']];
+function home(){
+ try{speechSynthesis.cancel()}catch(e){}
+ $.innerHTML='<div class="top"><h1>🐠 Binatang yang Hidup di Air</h1></div><div class="tip">👩‍🏫 Pilih menu sesuai urutan kegiatan. Ketuk menu untuk memulai. Tanda ✅ muncul setelah menu dibuka.</div><div class="menu">'+M.map((m,i)=>'<button onclick="go(\''+m[0]+'\')"><span class="e">'+m[1]+'</span><span class="t">'+(i+1)+'. '+m[2]+'<small>'+m[3]+'</small></span><span class="tick">'+(done[m[0]]?'✅':'')+'</span></button>').join('')+'</div>';
+ window.scrollTo(0,0);
+}
+function go(k){done[k]=done[k]||(k==='apersepsi'||k==='materi'||k==='sim'||k==='refleksi'?1:0);S[k]()}
+const S={};
+/* 1 APERSEPSI */
+const AQ=['Siapa ya yang suka berenang?','Kenapa dia tidak tenggelam?','Bagaimana dia bernapas di dalam air?','Apakah semua binatang bisa tinggal di air?'];
+S.apersepsi=()=>{
+ view('🫧 Apersepsi','<div class="card"><div class="big" id="mys">🌊❓</div><div class="say" id="sd">Plung! Plung! Siapa ya yang ada di dalam air?</div><div class="row" style="margin-top:12px"><button onclick="mys()">🔊 Dengarkan suaranya</button><button onclick="peek()">👀 Intip sedikit</button></div></div><div class="card"><div class="q">Ketuk gelembung 🫧 untuk memunculkan pertanyaan</div><div class="bubbles">'+AQ.map((q,i)=>'<button class="bub" id="b'+i+'" onclick="pop('+i+')">🫧</button>').join('')+'</div><div class="say" id="pq">Pertanyaan akan muncul di sini</div></div>',
+ 'Jangan dijelaskan dulu. Biarkan anak menebak, bertanya, dan bercerita. Catat pertanyaan anak di papan.');
+};
+function mys(){const t='Plung! Plung! Blub blub blub!';document.getElementById('sd').textContent=t+' Siapa dia ya?';say('Plung plung. Blub blub blub. Siapa dia ya?')}
+function peek(){const s=document.getElementById('mys'),sd=document.getElementById('sd');s.textContent='🌊 🫧 ❓ 🫧';sd.textContent='Ada sirip kecil bergerak... Kira-kira siapa? Ayo tebak!';say('Ada sesuatu bergerak di dalam air. Kira-kira siapa? Ayo tebak!')}
+function pop(i){const b=document.getElementById('b'+i);b.textContent='💥';setTimeout(()=>b.textContent='❔',400);document.getElementById('pq').textContent=AQ[i];say(AQ[i]);done.apersepsi=1}
+/* QUIZ ENGINE */
+const AW=[
+ {q:'Mana binatang yang hidup di air?',o:[['🦁','Singa'],['🐬','Lumba-lumba'],['🐘','Gajah']],a:1},
+ {q:'Ikan bergerak di air dengan apa?',o:[['🐟','Sirip'],['🪽','Sayap'],['🦵','Kaki berlari']],a:0},
+ {q:'Ikan butuh apa untuk hidup?',o:[['🏜️','Pasir kering'],['💧','Air'],['🔥','Api']],a:1}];
+const AK=[
+ {q:'Mana binatang yang hidup di air?',o:[['🐒','Monyet'],['🦒','Jerapah'],['🐙','Gurita']],a:2},
+ {q:'Ikan bergerak di air dengan apa?',o:[['🪽','Sayap'],['🦵','Kaki berlari'],['🐟','Sirip']],a:2},
+ {q:'Ikan butuh apa untuk hidup?',o:[['💧','Air'],['🔥','Api'],['🏜️','Pasir kering']],a:0}];
+const KQ=[
+ {q:'Mana binatang yang hidup di air?',o:[['🐟','Ikan'],['🐱','Kucing'],['🐔','Ayam']],a:0},
+ {q:'Ikan bernapas dengan apa?',o:[['🐠','Insang'],['👂','Telinga'],['✋','Tangan']],a:0},
+ {q:'Kepiting punya apa?',o:[['🪽','Sayap'],['🦀','Capit'],['🐘','Belalai']],a:1},
+ {q:'Gurita punya berapa lengan?',o:[['2️⃣','Dua'],['4️⃣','Empat'],['8️⃣','Delapan']],a:2},
+ {q:'Lumba-lumba hidup di mana?',o:[['🌳','Pohon'],['🏜️','Gurun'],['🌊','Laut']],a:2}];
+function quiz(list,fb,title,key){
+ let i=0,s=0,lock=false;
+ const show=()=>{lock=false;cur=list[i].q;
+  view(title+' '+(i+1)+'/'+list.length,'<div class="card"><div class="q">'+cur+'<button class="sp" onclick="sayCur()">🔊</button></div><div class="opts">'+list[i].o.map((o,j)=>'<button class="opt" id="o'+j+'" onclick="Q('+j+')"><span>'+o[0]+'</span>'+o[1]+'</button>').join('')+'</div><div id="fb"></div></div>',i===0?(fb?'Bacakan soal, anak menjawab dengan mengetuk gambar. Jawaban benar diberi penguatan.':'Bacakan soal. Tidak ada tanda benar atau salah, ini untuk melihat pemahaman anak. Hasil muncul di akhir untuk guru.'):'',true);
+  say(cur)};
+ const next=()=>{i++;i<list.length?show():end()};
+ window.Q=j=>{if(lock)return;lock=true;const q=list[i],ok=j===q.a;if(ok)s++;
+  const el=document.getElementById('o'+j);
+  if(fb){el.classList.add(ok?'ok':'no');if(!ok)document.getElementById('o'+q.a).classList.add('ok');document.getElementById('fb').textContent=ok?'🎉 Hebat! Benar!':'Ayo kita ingat lagi: '+q.o[q.a][1];say(ok?'Hebat! Benar!':'Jawabannya '+q.o[q.a][1]);setTimeout(next,2000)}
+  else{el.classList.add('sel');setTimeout(next,600)}};
+ const end=()=>{res[key]=s;done[key]=1;
+  let note='';
+  if(!fb){note='<div class="tip">👩‍🏫 Catatan guru: skor '+(key==='awal'?'awal':'akhir')+' = '+s+' dari '+list.length+'.'+(key==='akhir'&&res.awal!=null?' Asesmen awal: '+res.awal+', asesmen akhir: '+s+(s>res.awal?' (meningkat).':s===res.awal?' (tetap).':' (menurun, perlu pendampingan).'):'')+'</div>'}
+  view('Selesai!','<div class="card"><div class="stars">'+'⭐'.repeat(Math.max(s,1))+'</div><div class="big">🎉</div><p style="text-align:center">'+(fb?'Kamu menjawab benar '+s+' dari '+list.length+'. Hebat!':'Terima kasih sudah menjawab!')+'</p></div>'+note+'<div class="row"><button class="home" onclick="home()">🏠 Kembali ke Menu</button></div>',null,true);
+  say('Terima kasih. Kamu hebat!')};
+ show()}
+S.awal=()=>quiz(AW,false,'🔍 Asesmen Awal','awal');
+S.akhir=()=>quiz(AK,false,'📝 Asesmen Akhir','akhir');
+S.kuis=()=>quiz(KQ,true,'⭐ Kuis','kuis');
+/* 3 MATERI */
+const A=[
+ {e:'🐟',n:'Ikan',w:'Sungai, kolam, dan laut',c:'Bernapas dengan insang. Tubuhnya licin dan bersisik.',m:'Berenang dengan sirip dan ekor.'},
+ {e:'🐬',n:'Lumba-lumba',w:'Laut',c:'Pintar dan suka bermain. Bernapas dengan paru-paru, jadi naik ke permukaan untuk bernapas.',m:'Berenang dan melompat di atas air.'},
+ {e:'🐢',n:'Penyu',w:'Laut. Bertelur di pantai',c:'Punya cangkang yang keras di punggungnya.',m:'Berenang dengan kaki seperti dayung.'},
+ {e:'🦀',n:'Kepiting',w:'Laut dan pantai',c:'Punya dua capit dan cangkang keras.',m:'Berjalan menyamping.'},
+ {e:'🐙',n:'Gurita',w:'Laut',c:'Punya delapan lengan yang lentur.',m:'Berenang dan merayap di dasar laut.'},
+ {e:'🐸',n:'Katak',w:'Di air dan di darat',c:'Kulitnya basah dan licin. Suaranya kruk kruk.',m:'Berenang dan melompat.'}];
+S.materi=()=>{
+ view('📖 Materi Pokok','<div class="card"><div class="q">Binatang air itu hidup di air. Ketuk gambar untuk mengenalnya!</div></div><div class="grid">'+A.map((a,i)=>'<button class="opt" onclick="det('+i+')"><span>'+a.e+'</span>'+a.n+'</button>').join('')+'</div><div class="card" style="margin-top:14px"><div class="q small">Masih ada lagi: 🦈 hiu, 🦐 udang, 🐡 ikan buntal, 🦑 cumi-cumi</div></div>','Tunjukkan gambar, lalu minta anak menirukan gerakan binatang. Tombol 🔊 membacakan keterangan.');
+};
+function det(i){const a=A[i],t=a.n+'. Tempat hidup: '+a.w+'. '+a.c+' Gerakannya: '+a.m;cur=t;
+ view(a.e+' '+a.n,'<div class="card"><div class="big">'+a.e+'</div><div class="q"><b>'+a.n+'</b> <button class="sp" onclick="sayCur()">🔊</button></div><ul class="g"><li>🏠 <b>Tempat hidup:</b> '+a.w+'</li><li>🔎 <b>Ciri:</b> '+a.c+'</li><li>💦 <b>Bergerak:</b> '+a.m+'</li></ul></div><div class="row"><button onclick="S.materi()">⬅️ Binatang lain</button></div>','Ajak anak menirukan gerakan binatang ini.');
+ say(t)}
+/* 4 SIMULASI */
+const SI=[['🐟',1],['🐱',0],['🐙',1],['🐔',0],['🦀',1],['🐘',0],['🐬',1],['🐄',0]];
+let sel=null,sc=0;
+S.sim=()=>{sel=null;sc=0;
+ view('🎮 Simulasi','<div class="card"><div class="q">Ketuk binatang, lalu ketuk rumahnya: air atau darat?</div><div class="pool" id="pool">'+SI.map((s,i)=>'<button class="chip" id="c'+i+'" onclick="pick('+i+')"><span>'+s[0]+'</span></button>').join('')+'</div></div><div class="zones"><button class="zone air" onclick="put(1)">🌊 Air<div class="in" id="za"></div></button><button class="zone dar" onclick="put(0)">🌳 Darat<div class="in" id="zd"></div></button></div><div class="say" id="sm">Pilih satu binatang</div>','Anak boleh bergantian maju ke layar. Tanyakan: Kenapa dia tinggal di sini?');
+};
+function pick(i){if(document.getElementById('c'+i).style.display==='none')return;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));sel=i;document.getElementById('c'+i).classList.add('on');document.getElementById('sm').textContent='Rumah '+SI[i][0]+' di mana ya?'}
+function put(z){if(sel===null){document.getElementById('sm').textContent='Pilih dulu binatangnya ya';return}
+ const c=document.getElementById('c'+sel),s=SI[sel];
+ if(s[1]===z){c.style.display='none';document.getElementById(z?'za':'zd').textContent+=s[0];sc++;sel=null;
+  if(sc===SI.length){document.getElementById('sm').textContent='🎉 Hebat! Semua sudah pulang ke rumahnya!';say('Hebat! Semua binatang sudah pulang ke rumahnya!')}
+  else{document.getElementById('sm').textContent='Benar! 👏';say('Benar!')}}
+ else{c.classList.add('shake');setTimeout(()=>c.classList.remove('shake'),400);document.getElementById('sm').textContent='Coba lagi ya, kamu pasti bisa! 💪';say('Coba lagi ya')}}
+/* 7 REFLEKSI */
+S.refleksi=()=>{
+ view('😊 Refleksi','<div class="card"><div class="q">Hari ini aku merasa...</div><div class="row" style="margin-top:12px">'+['😀','🙂','😐'].map(f=>'<button class="face" onclick="ref2(\''+f+'\')">'+f+'</button>').join('')+'</div></div>','Tanyakan perasaan anak dengan lembut, lalu tanggapi tiap pilihan.');
+ cur='Hari ini aku merasa...';say(cur)};
+function ref2(f){
+ view('😊 Refleksi','<div class="card"><div class="q">Binatang air yang paling aku suka...</div><div class="grid" style="margin-top:12px">'+A.map(a=>'<button class="opt" onclick="ref3(\''+a.e+'\',\''+a.n+'\')"><span>'+a.e+'</span>'+a.n+'</button>').join('')+'</div></div>');
+ say('Binatang air yang paling aku suka')}
+function ref3(e,n){
+ done.refleksi=1;
+ view('😊 Refleksi','<div class="card"><div class="big">'+e+'</div><div class="q">Kamu suka <b>'+n+'</b>! 🌟</div></div><div class="card"><div class="q small">Pertanyaan pancingan untuk guru:</div><ul class="g"><li>Apa yang kamu pelajari hari ini?</li><li>Binatang apa yang tinggal di air?</li><li>Bagian mana yang paling seru?</li><li>Kamu mau cerita apa kepada ayah dan ibu?</li></ul></div><div class="row"><button class="home" onclick="home()">🏠 Kembali ke Menu</button></div>',null,true);
+ say('Kamu suka '+n+'. Hebat! Terima kasih sudah belajar hari ini.')}
+home();
+</script></body></html>
